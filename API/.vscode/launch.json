@@ -9,11 +9,10 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/API/bin/Debug/net7.0/API.dll",
+      "program": "${workspaceFolder}/bin/Debug/net7.0/API.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/API",
+      "cwd": "${workspaceFolder}",
       "stopAtEntry": false,
-      // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
       "serverReadyAction": {
         "action": "openExternally",
         "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
