@@ -1,7 +1,8 @@
 import { ShoppingCart } from '@mui/icons-material';
-import { AppBar, Badge, Box, Container, IconButton, List, ListItem, Switch, Toolbar, Typography } from '@mui/material';
+import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from '@mui/material';
 import { ChangeEvent } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { useStoreContext } from '../context/StoreContext';
 
 const midLinks = [
   { title: 'catalog', path: '/catalog' },
@@ -28,6 +29,9 @@ interface Props {
 }
 
 export default function Header({ darkMode, setDarkMode }: Props) {
+  const { basket } = useStoreContext();
+  const itemCount = basket?.items?.reduce((s, a) => (s += a.quantity), 0);
+
   function switchTheme(event: ChangeEvent<HTMLInputElement>, checked: boolean) {
     setDarkMode(checked);
   }
@@ -43,7 +47,7 @@ export default function Header({ darkMode, setDarkMode }: Props) {
 
         <Box>
           <List sx={{ display: 'flex' }}>
-            {midLinks.map(({ title, path }) => {
+            {midLinks?.map(({ title, path }) => {
               return (
                 <ListItem component={NavLink} to={path} key={path} sx={navStyles}>
                   {title.toUpperCase()}
@@ -54,13 +58,13 @@ export default function Header({ darkMode, setDarkMode }: Props) {
         </Box>
 
         <Box display={'flex'} alignItems="center">
-          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} aria-label="menu">
-            <Badge badgeContent="4" color="secondary">
+          <IconButton size="large" edge="start" color="inherit" sx={{ mr: 2 }} aria-label="menu" component={Link} to={'/basket'}>
+            <Badge badgeContent={itemCount} color="secondary">
               <ShoppingCart></ShoppingCart>
             </Badge>
           </IconButton>
           <List sx={{ display: 'flex' }}>
-            {rightLinks.map(({ title, path }) => {
+            {rightLinks?.map(({ title, path }) => {
               return (
                 <ListItem component={NavLink} to={path} key={path} sx={navStyles}>
                   {title.toUpperCase()}
