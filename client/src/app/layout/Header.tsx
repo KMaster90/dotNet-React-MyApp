@@ -2,7 +2,7 @@ import { ShoppingCart } from '@mui/icons-material';
 import { AppBar, Badge, Box, IconButton, List, ListItem, Switch, Toolbar, Typography } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useStoreContext } from '../context/StoreContext';
+import { useAppSelector } from '../../features/contact/configureStore';
 
 const midLinks = [
   { title: 'catalog', path: '/catalog' },
@@ -29,7 +29,7 @@ interface Props {
 }
 
 export default function Header({ darkMode, setDarkMode }: Props) {
-  const { basket } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
   const itemCount = basket?.items?.reduce((s, a) => (s += a.quantity), 0);
 
   function switchTheme(event: ChangeEvent<HTMLInputElement>, checked: boolean) {

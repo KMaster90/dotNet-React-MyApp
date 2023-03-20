@@ -1,9 +1,9 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
-import { useStoreContext } from '../../app/context/StoreContext';
 import { currencyFormat } from '../../app/util/util';
+import { useAppSelector } from '../contact/configureStore';
 
 export default function BasketSummary() {
-  const { basket } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
   const receipt: { [k: string]: number } = {
     subtotal: basket?.items.reduce((priceState, item) => priceState + item.price * item.quantity, 0) ?? 0,
     get 'delivery_fee*'() {

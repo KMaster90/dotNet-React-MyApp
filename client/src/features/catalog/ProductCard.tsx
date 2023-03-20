@@ -1,36 +1,23 @@
 import { LoadingButton } from '@mui/lab';
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from '@mui/material';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import agent from '../../app/api/agent';
-import { useStoreContext } from '../../app/context/StoreContext';
 import { Product } from '../../app/models/product';
 import { currencyFormat } from '../../app/util/util';
+import { addBasketItemAsync } from '../basket/basketSlice';
+import { useAppDispatch, useAppSelector } from '../contact/configureStore';
 
 interface Props {
   product: Product;
 }
 
 export default function ProductCard({ product }: Props) {
-  const [loading, setLoading] = useState(false);
-  const { setBasket } = useStoreContext();
-
-  function handleAddItem(productId: number) {
-    setLoading(true);
-    agent.Basket.addItem(productId)
-      .then((b) => {
-        console.log(b);
-        return b;
-      })
-      .then((res) => setBasket(res.value))
-      .catch((error) => console.error('MY_ERROR', error))
-      .finally(() => setLoading(false));
-  }
+  const { status } = useAppSelector((state) => state.basket);
+  const dispatch = useAppDispatch();
 
   return (
     <Card>
       <CardHeader
-        avatar={<Avatar sx={{ bgcolor: 'secondary.main' }}>{product.name.charAt(0).toUpperCase()}</Avatar>}
+        avatar={<Avatar sx={{ bgcolor: 'secondary.main' }}>{product.name?.charAt(0).toUpperCase()}</Avatar>}
         title={product.name}
         titleTypographyProps={{ sx: { fontWeight: 'bold', color: 'primary.main' } }}
       />
@@ -44,7 +31,10 @@ export default function ProductCard({ product }: Props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <LoadingButton size="small" loading={loading} onClick={() => handleAddItem(product.id)}>
+        <LoadingButton
+          size="small"
+          loading={status === 'pendingAddItem' + product.id}
+          onClick={() => dispatch(addBasketItemAsync({ productId: product.id }))}>
           Add to cart
         </LoadingButton>
         <Button size="small" component={Link} to={`/catalog/${product.id}`}>

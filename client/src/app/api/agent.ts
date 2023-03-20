@@ -54,7 +54,7 @@ const requests = {
 
 const Catalog = {
   list: (): Promise<Product[]> => requests.get('/products'),
-  details: (id: string): Promise<Product> => requests.get(`/products/${id}`)
+  details: (id: number): Promise<Product> => requests.get(`/products/${id}`)
 };
 
 const TestErrors = {
